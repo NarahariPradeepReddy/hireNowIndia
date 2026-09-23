@@ -1,13 +1,13 @@
 {
   "files": {
     "main.css": "/hireNowIndia/static/css/main.7a147187.css",
-    "main.js": "/hireNowIndia/static/js/main.e35446d9.js",
+    "main.js": "/hireNowIndia/static/js/main.cc226893.js",
     "index.html": "/hireNowIndia/index.html",
     "main.7a147187.css.map": "/hireNowIndia/static/css/main.7a147187.css.map",
-    "main.e35446d9.js.map": "/hireNowIndia/static/js/main.e35446d9.js.map"
+    "main.cc226893.js.map": "/hireNowIndia/static/js/main.cc226893.js.map"
   },
   "entrypoints": [
     "static/css/main.7a147187.css",
-    "static/js/main.e35446d9.js"
+    "static/js/main.cc226893.js"
   ]
 }
