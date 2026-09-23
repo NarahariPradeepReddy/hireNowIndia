@@ -75,8 +75,7 @@ function Footer() {
                 lineHeight: 1.8,
               }}
             >
-              India's trusted recruitment platform connecting ambitious
-              candidates with the right opportunities.
+              {siteConfig.company.description}
             </Typography>
           </Grid>
 
@@ -128,7 +127,7 @@ function Footer() {
             color: "rgba(255,255,255,0.45)",
           }}
         >
-          © 2026 Hire Now India. All rights reserved.
+          © {new Date().getFullYear()} {siteConfig.company.name}. All rights reserved.
         </Typography>
       </Container>
     </Box>

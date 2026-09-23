@@ -7,6 +7,8 @@ import About from "../pages/About/About";
 import Contact from "../pages/Contact/Contact";
 import JobDetails from "../pages/JobDetails/JobDetails";
 import Apply from "../pages/Apply/Apply";
+import Privacy from "../pages/Privacy/Privacy";
+import Terms from "../pages/Terms/Terms";
 import NotFound from "../pages/NotFound/NotFound";
 
 function AppRoutes() {
@@ -19,7 +21,9 @@ function AppRoutes() {
       <Route path="/employers" element={<Employers />} />
       <Route path="/about" element={<About />} />
       <Route path="/contact" element={<Contact />} />
-      <Route path="/*" element={<NotFound />} />
+      <Route path="/privacy" element={<Privacy />} />
+      <Route path="/terms" element={<Terms />} />
+      <Route path="*" element={<NotFound />} />
     </Routes>
   );
 }

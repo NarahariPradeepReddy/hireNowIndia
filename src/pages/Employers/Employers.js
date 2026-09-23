@@ -13,7 +13,6 @@ import PeopleAltOutlinedIcon from "@mui/icons-material/PeopleAltOutlined";
 import SearchOutlinedIcon from "@mui/icons-material/SearchOutlined";
 import SpeedOutlinedIcon from "@mui/icons-material/SpeedOutlined";
 import SupportAgentOutlinedIcon from "@mui/icons-material/SupportAgentOutlined";
-import AssignmentTurnedInOutlinedIcon from "@mui/icons-material/AssignmentTurnedInOutlined";
 import CheckCircleOutlineOutlinedIcon from "@mui/icons-material/CheckCircleOutlineOutlined";
 
 import { Link } from "react-router-dom";

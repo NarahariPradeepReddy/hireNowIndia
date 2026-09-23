@@ -1,22 +1,19 @@
 import { useMemo, useState } from "react";
-
 import {
   Box,
+  Button,
   Container,
+  Grid,
   Typography,
 } from "@mui/material";
 
-import SearchOffOutlinedIcon from "@mui/icons-material/SearchOffOutlined";
-
-import jobs from "../../data/jobs";
-
-import JobCard from "../../components/jobs/JobCard";
 import JobSearch from "../../components/jobs/JobSearch";
 import JobFilters from "../../components/jobs/JobFilters";
+import JobCard from "../../components/jobs/JobCard";
+import { getJobs } from "../../services/jobService";
 
 function Jobs() {
   const [searchTerm, setSearchTerm] = useState("");
-
   const [location, setLocation] = useState("");
   const [jobType, setJobType] = useState("");
   const [experience, setExperience] = useState("");
@@ -24,16 +21,10 @@ function Jobs() {
 
   const [submittedSearch, setSubmittedSearch] = useState("");
 
-  const handleSearch = (event) => {
-    event.preventDefault();
-
-    setSubmittedSearch(searchTerm.trim());
-  };
-
   const filteredJobs = useMemo(() => {
     const search = submittedSearch.toLowerCase();
 
-    return jobs.filter((job) => {
+    return getJobs().filter((job) => {
       const matchesSearch =
         !search ||
         job.title.toLowerCase().includes(search) ||
@@ -43,9 +34,12 @@ function Jobs() {
         );
 
       const matchesLocation =
-        !location || job.location === location;
+        !location ||
+        job.location
+          .toLowerCase()
+          .includes(location.toLowerCase());
 
-      const matchesType =
+      const matchesJobType =
         !jobType || job.type === jobType;
 
       const matchesExperience =
@@ -57,7 +51,7 @@ function Jobs() {
       return (
         matchesSearch &&
         matchesLocation &&
-        matchesType &&
+        matchesJobType &&
         matchesExperience &&
         matchesCategory
       );
@@ -70,70 +64,68 @@ function Jobs() {
     category,
   ]);
 
+  const handleSearch = () => {
+    setSubmittedSearch(searchTerm);
+  };
+
+  const handleClearFilters = () => {
+    setSearchTerm("");
+    setSubmittedSearch("");
+    setLocation("");
+    setJobType("");
+    setExperience("");
+    setCategory("");
+  };
+
   return (
-    <Box
-      sx={{
-        backgroundColor: "#FCFAF5",
-        minHeight: "70vh",
-      }}
-    >
-      {/* Hero */}
+    <Box>
+      {/* Page Header */}
       <Box
         sx={{
-          backgroundColor: "#F5EFE4",
-          borderBottom: "1px solid #E8DFD1",
+          backgroundColor: "background.paper",
+          borderBottom: "1px solid",
+          borderColor: "divider",
           py: {
-            xs: 6,
+            xs: 5,
             md: 7,
           },
         }}
       >
         <Container maxWidth="lg">
           <Typography
+            variant="h2"
             sx={{
-              color: "#E88912",
-              fontSize: 11,
-              fontWeight: 700,
+              fontSize: {
+                xs: "2rem",
+                md: "3rem",
+              },
               mb: 1,
             }}
           >
-            CAREER OPPORTUNITIES
+            Find Your Next Job
           </Typography>
 
           <Typography
-            component="h1"
+            variant="body1"
+            color="text.secondary"
             sx={{
-              color: "#171614",
-              fontSize: {
-                xs: 32,
-                sm: 38,
-                md: 44,
-              },
-              fontWeight: 800,
-              letterSpacing: "-0.045em",
-              lineHeight: 1.05,
-              mb: 1.5,
+              maxWidth: 650,
             }}
           >
-            Find your perfect job
+            Explore job opportunities from companies
+            looking for talented professionals like you.
           </Typography>
+        </Container>
+      </Box>
 
-          <Typography
-            sx={{
-              color: "#756F67",
-              fontSize: {
-                xs: 13,
-                md: 14,
-              },
-              lineHeight: 1.7,
-              maxWidth: 560,
-              mb: 3,
-            }}
-          >
-            Discover opportunities from leading companies across India
-            and take the next step in your career.
-          </Typography>
-
+      {/* Search Section */}
+      <Box
+        sx={{
+          py: 3,
+          backgroundColor: "background.default",
+        }}
+      >
+        <Container maxWidth="lg">
           <JobSearch
             searchTerm={searchTerm}
             setSearchTerm={setSearchTerm}
@@ -142,138 +134,146 @@ function Jobs() {
         </Container>
       </Box>
 
-      {/* Jobs */}
+      {/* Jobs Section */}
       <Container
         maxWidth="lg"
         sx={{
-          py: {
-            xs: 5,
-            md: 7,
-          },
+          pb: 8,
         }}
       >
-        {/* Filters */}
-        <Box sx={{ mb: 4 }}>
-          <JobFilters
-            location={location}
-            setLocation={setLocation}
-            jobType={jobType}
-            setJobType={setJobType}
-            experience={experience}
-            setExperience={setExperience}
-            category={category}
-            setCategory={setCategory}
-          />
-        </Box>
-
-        {/* Results header */}
-        <Box
-          sx={{
-            display: "flex",
-            justifyContent: "space-between",
-            alignItems: "center",
-            mb: 2,
+        <Grid
+          container
+          spacing={{
+            xs: 3,
+            md: 4,
           }}
+          alignItems="flex-start"
         >
-          <Typography
-            sx={{
-              fontSize: 14,
-              fontWeight: 700,
-              color: "#292622",
+          {/* Filters */}
+          <Grid
+            size={{
+              xs: 12,
+              md: 3,
             }}
           >
-            {filteredJobs.length}{" "}
-            {filteredJobs.length === 1
-              ? "job"
-              : "jobs"}{" "}
-            found
-          </Typography>
-
-          {(submittedSearch ||
-            location ||
-            jobType ||
-            experience ||
-            category) && (
-            <Typography
-              component="button"
-              onClick={() => {
-                setSearchTerm("");
-                setSubmittedSearch("");
-                setLocation("");
-                setJobType("");
-                setExperience("");
-                setCategory("");
-              }}
-              sx={{
-                border: 0,
-                background: "transparent",
-                cursor: "pointer",
-                color: "#D97706",
-                fontSize: 11,
-                fontWeight: 700,
-              }}
-            >
-              Clear filters
-            </Typography>
-          )}
-        </Box>
-
-        {/* Results */}
-        {filteredJobs.length > 0 ? (
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              gap: 1.5,
-            }}
-          >
-            {filteredJobs.map((job) => (
-              <JobCard
-                key={job.id}
-                job={job}
-              />
-            ))}
-          </Box>
-        ) : (
-          <Box
-            sx={{
-              border: "1px solid #E1D5C2",
-              borderRadius: "10px",
-              backgroundColor: "#FFFFFF",
-              py: 8,
-              px: 3,
-              textAlign: "center",
-            }}
-          >
-            <SearchOffOutlinedIcon
-              sx={{
-                fontSize: 42,
-                color: "#C8BBA8",
-                mb: 1.5,
-              }}
+            <JobFilters
+              location={location}
+              setLocation={setLocation}
+              jobType={jobType}
+              setJobType={setJobType}
+              experience={experience}
+              setExperience={setExperience}
+              category={category}
+              setCategory={setCategory}
+              onClear={handleClearFilters}
             />
+          </Grid>
 
-            <Typography
+          {/* Results */}
+          <Grid
+            size={{
+              xs: 12,
+              md: 9,
+            }}
+          >
+            {/* Results Header */}
+            <Box
               sx={{
-                fontSize: 17,
-                fontWeight: 700,
-                color: "#292622",
-                mb: 0.75,
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                mb: 2.5,
+                gap: 2,
               }}
             >
-              No jobs found
-            </Typography>
+              <Typography
+                variant="h6"
+                sx={{
+                  fontWeight: 700,
+                }}
+              >
+                {filteredJobs.length}{" "}
+                {filteredJobs.length === 1
+                  ? "Job"
+                  : "Jobs"}{" "}
+                Found
+              </Typography>
 
-            <Typography
-              sx={{
-                fontSize: 13,
-                color: "#756F67",
-              }}
-            >
-              Try changing your search or filters.
-            </Typography>
-          </Box>
-        )}
+              {(searchTerm ||
+                location ||
+                jobType ||
+                experience ||
+                category) && (
+                <Button
+                  variant="text"
+                  size="small"
+                  onClick={handleClearFilters}
+                >
+                  Clear All
+                </Button>
+              )}
+            </Box>
+
+            {/* Job List */}
+            {filteredJobs.length > 0 ? (
+              <Box
+                sx={{
+                  display: "flex",
+                  flexDirection: "column",
+                  gap: 2,
+                }}
+              >
+                {filteredJobs.map((job) => (
+                  <JobCard
+                    key={job.id}
+                    job={job}
+                  />
+                ))}
+              </Box>
+            ) : (
+              <Box
+                sx={{
+                  backgroundColor: "background.paper",
+                  border: "1px solid",
+                  borderColor: "divider",
+                  borderRadius: 2,
+                  p: {
+                    xs: 4,
+                    md: 6,
+                  },
+                  textAlign: "center",
+                }}
+              >
+                <Typography
+                  variant="h5"
+                  sx={{
+                    mb: 1,
+                  }}
+                >
+                  No jobs found
+                </Typography>
+
+                <Typography
+                  variant="body2"
+                  color="text.secondary"
+                  sx={{
+                    mb: 3,
+                  }}
+                >
+                  Try changing your search or filters to
+                  find more opportunities.
+                </Typography>
+
+                <Button
+                  variant="contained"
+                  onClick={handleClearFilters}
+                >
+                  Clear Filters
+                </Button>
+              </Box>
+            )}
+          </Grid>
+        </Grid>
       </Container>
     </Box>
   );

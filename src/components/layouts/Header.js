@@ -18,25 +18,6 @@ import CloseIcon from "@mui/icons-material/Close";
 import { Link, NavLink } from "react-router-dom";
 import siteConfig from "../../config/siteConfig";
 
-const navigation = [
-  {
-    label: "Jobs",
-    path: "/jobs",
-  },
-  {
-    label: "For Employers",
-    path: "/employers",
-  },
-  {
-    label: "About",
-    path: "/about",
-  },
-  {
-    label: "Contact",
-    path: "/contact",
-  },
-];
-
 function Header() {
   const [mobileOpen, setMobileOpen] = useState(false);
 
@@ -112,7 +93,7 @@ function Header() {
                 gap: 3,
               }}
             >
-              {navigation.map((item) => (
+              {siteConfig.navigation.map((item) => (
                 <NavLink
                   key={item.path}
                   to={item.path}
@@ -174,7 +155,7 @@ function Header() {
           </Box>
 
           <List>
-            {navigation.map((item) => (
+            {siteConfig.navigation.map((item) => (
               <ListItem key={item.path} disablePadding>
                 <ListItemButton
                   component={NavLink}

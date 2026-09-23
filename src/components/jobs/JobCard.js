@@ -2,13 +2,16 @@ import {
   Box,
   Button,
   Chip,
+  Divider,
+  Stack,
   Typography,
 } from "@mui/material";
 
 import LocationOnOutlinedIcon from "@mui/icons-material/LocationOnOutlined";
 import WorkOutlineOutlinedIcon from "@mui/icons-material/WorkOutlineOutlined";
 import AccessTimeOutlinedIcon from "@mui/icons-material/AccessTimeOutlined";
-import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
+import ArrowForwardOutlinedIcon from "@mui/icons-material/ArrowForwardOutlined";
+import BusinessCenterOutlinedIcon from "@mui/icons-material/BusinessCenterOutlined";
 
 import { Link } from "react-router-dom";
 
@@ -16,59 +19,62 @@ function JobCard({ job }) {
   return (
     <Box
       sx={{
-        border: "1px solid #E1D5C2",
-        borderRadius: "10px",
-        backgroundColor: "#FFFFFF",
+        backgroundColor: "background.paper",
+        border: "1px solid",
+        borderColor: "divider",
+        borderRadius: 2,
         p: {
           xs: 2.5,
-          md: 3,
+          sm: 3,
         },
-
         transition:
-          "transform 0.2s ease, box-shadow 0.2s ease, border-color 0.2s ease",
+          "border-color 0.2s ease, box-shadow 0.2s ease, transform 0.2s ease",
 
         "&:hover": {
+          borderColor: "primary.main",
+          boxShadow: "0 8px 24px rgba(23, 22, 20, 0.07)",
           transform: "translateY(-2px)",
-          borderColor: "#D5C2A5",
-          boxShadow: "0 10px 28px rgba(61, 45, 25, 0.07)",
         },
       }}
     >
-      {/* Top section */}
+      {/* Top Section */}
       <Box
         sx={{
           display: "flex",
           justifyContent: "space-between",
-          alignItems: {
-            xs: "flex-start",
-            sm: "center",
-          },
+          alignItems: "flex-start",
           gap: 2,
-          mb: 2,
         }}
       >
-        <Box>
+        <Box sx={{ minWidth: 0 }}>
           <Typography
-            component="h3"
+            variant="h6"
+            component={Link}
+            to={`/jobs/${job.id}`}
             sx={{
+              display: "inline-block",
+              color: "text.primary",
               fontSize: {
-                xs: 17,
-                md: 18,
+                xs: "1.05rem",
+                sm: "1.15rem",
               },
               fontWeight: 750,
-              lineHeight: 1.35,
-              color: "#211F1C",
-              mb: 0.6,
+              lineHeight: 1.3,
+              mb: 0.5,
+
+              "&:hover": {
+                color: "primary.main",
+              },
             }}
           >
             {job.title}
           </Typography>
 
           <Typography
+            variant="body2"
+            color="text.secondary"
             sx={{
-              fontSize: 13,
-              fontWeight: 600,
-              color: "#5F5951",
+              fontWeight: 500,
             }}
           >
             {job.company}
@@ -79,26 +85,24 @@ function JobCard({ job }) {
           label={job.type}
           size="small"
           sx={{
-            height: 26,
-            backgroundColor: "#FFF0DC",
-            color: "#C96F00",
-            fontSize: 10.5,
+            flexShrink: 0,
+            backgroundColor: "rgba(242, 140, 24, 0.10)",
+            color: "primary.dark",
             fontWeight: 700,
-            borderRadius: "6px",
+            borderRadius: 1,
           }}
         />
       </Box>
 
-      {/* Job information */}
-      <Box
+      {/* Job Information */}
+      <Stack
+        direction="row"
+        spacing={2.5}
+        useFlexGap
+        flexWrap="wrap"
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: {
-            xs: 1.5,
-            md: 2.5,
-          },
-          mb: 2,
+          mt: 2,
+          color: "text.secondary",
         }}
       >
         <Box
@@ -111,16 +115,11 @@ function JobCard({ job }) {
           <LocationOnOutlinedIcon
             sx={{
               fontSize: 17,
-              color: "#E88912",
+              color: "primary.main",
             }}
           />
 
-          <Typography
-            sx={{
-              fontSize: 12,
-              color: "#6F6961",
-            }}
-          >
+          <Typography variant="body2">
             {job.location}
           </Typography>
         </Box>
@@ -134,42 +133,48 @@ function JobCard({ job }) {
         >
           <WorkOutlineOutlinedIcon
             sx={{
-              fontSize: 16,
-              color: "#E88912",
+              fontSize: 17,
+              color: "primary.main",
             }}
           />
 
-          <Typography
-            sx={{
-              fontSize: 12,
-              color: "#6F6961",
-            }}
-          >
+          <Typography variant="body2">
             {job.experience}
           </Typography>
         </Box>
 
-        <Typography
+        <Box
           sx={{
-            fontSize: 12,
-            color: "#5E5850",
-            fontWeight: 600,
+            display: "flex",
+            alignItems: "center",
+            gap: 0.6,
           }}
         >
-          {job.salary}
-        </Typography>
-      </Box>
+          <BusinessCenterOutlinedIcon
+            sx={{
+              fontSize: 17,
+              color: "primary.main",
+            }}
+          />
+
+          <Typography
+            variant="body2"
+            sx={{
+              fontWeight: 600,
+            }}
+          >
+            {job.salary}
+          </Typography>
+        </Box>
+      </Stack>
 
       {/* Description */}
       <Typography
+        variant="body2"
+        color="text.secondary"
         sx={{
-          fontSize: {
-            xs: 12.5,
-            md: 13,
-          },
+          mt: 2,
           lineHeight: 1.7,
-          color: "#716B63",
-          mb: 2.25,
           display: "-webkit-box",
           WebkitLineClamp: 2,
           WebkitBoxOrient: "vertical",
@@ -180,84 +185,95 @@ function JobCard({ job }) {
       </Typography>
 
       {/* Skills */}
-      <Box
+      <Stack
+        direction="row"
+        spacing={0.8}
+        useFlexGap
+        flexWrap="wrap"
         sx={{
-          display: "flex",
-          flexWrap: "wrap",
-          gap: 0.75,
-          mb: 2.5,
+          mt: 2,
         }}
       >
-        {job.skills.slice(0, 5).map((skill) => (
-          <Box
+        {job.skills.slice(0, 6).map((skill) => (
+          <Chip
             key={skill}
+            label={skill}
+            size="small"
+            variant="outlined"
             sx={{
-              border: "1px solid #E8DFD1",
-              borderRadius: "5px",
-              px: 1,
-              py: 0.45,
-              color: "#686159",
-              fontSize: 10.5,
-              backgroundColor: "#FCFAF5",
+              borderColor: "divider",
+              color: "text.secondary",
+              backgroundColor: "background.default",
+              fontSize: "0.72rem",
+              height: 26,
             }}
-          >
-            {skill}
-          </Box>
+          />
         ))}
-      </Box>
+      </Stack>
 
-      {/* Bottom */}
+      {/* Bottom Section */}
+      <Divider
+        sx={{
+          my: 2.5,
+        }}
+      />
+
       <Box
         sx={{
-          borderTop: "1px solid #EEE7DB",
-          pt: 2,
           display: "flex",
           justifyContent: "space-between",
           alignItems: "center",
           gap: 2,
+
+          flexDirection: {
+            xs: "column",
+            sm: "row",
+          },
         }}
       >
+        {/* Posted Date */}
         <Box
           sx={{
             display: "flex",
             alignItems: "center",
-            gap: 0.5,
+            gap: 0.7,
+            alignSelf: {
+              xs: "flex-start",
+              sm: "auto",
+            },
           }}
         >
           <AccessTimeOutlinedIcon
             sx={{
-              fontSize: 15,
-              color: "#92897D",
+              fontSize: 16,
+              color: "text.secondary",
             }}
           />
 
           <Typography
-            sx={{
-              fontSize: 10.5,
-              color: "#92897D",
-            }}
+            variant="caption"
+            color="text.secondary"
           >
             Posted {job.postedDate}
           </Typography>
         </Box>
 
+        {/* CTA */}
         <Button
           component={Link}
           to={`/jobs/${job.id}`}
           variant="contained"
-          endIcon={<ArrowForwardIcon sx={{ fontSize: 15 }} />}
+          endIcon={<ArrowForwardOutlinedIcon />}
           sx={{
-            minHeight: 38,
-            px: 1.8,
-            fontSize: 11,
-            backgroundColor: "#EE8B13",
+            minWidth: 115,
 
-            "&:hover": {
-              backgroundColor: "#D97706",
+            alignSelf: {
+              xs: "stretch",
+              sm: "auto",
             },
           }}
         >
-          View job
+          View Job
         </Button>
       </Box>
     </Box>

@@ -7,6 +7,7 @@ import {
 
 import ArrowForwardIcon from "@mui/icons-material/ArrowForward";
 import { Link } from "react-router-dom";
+import siteConfig from "../../config/siteConfig";
 
 function EmployerHero() {
   return (
@@ -142,7 +143,7 @@ function EmployerHero() {
               }}
             >
               Post jobs, reach millions of qualified candidates, and build
-              your dream team with Hire Now India's powerful recruitment
+              your dream team with {siteConfig.company.name}'s powerful recruitment
               platform.
             </Typography>
 
